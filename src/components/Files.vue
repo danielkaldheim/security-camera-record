@@ -1,9 +1,29 @@
 <template>
   <div class="hello">
-    <div v-for="file in files" :key="file.filePath" class="video-block">
+    <div class="video-block">
+      <h4>Now</h4>
+      <div>
+        <img
+          src="http://10.1.4.91:8080/?action=stream"
+          width="640"
+          height="480"
+        />
+      </div>
+    </div>
+    <div
+      v-for="(file, index) in files"
+      :key="file.filePath"
+      class="video-block"
+    >
       <h4>{{ printDate(file.date) }}</h4>
       <div>
-        <video width="640" height="480" controls>
+        <video
+          width="640"
+          height="480"
+          controls
+          :id="'video-' + index"
+          @durationchange="durationChangeEventHandler($event, file)"
+        >
           <source :src="'/data/' + encodeURI(file.filePath)" type="video/mp4" />
           Your browser does not support the video tag.
         </video>
@@ -22,6 +42,17 @@
 import { Vue } from 'vue-property-decorator';
 import filesize from 'filesize';
 
+interface Video {
+  filePath: string;
+  date: string;
+  stats: {
+    size: number;
+    atime: string;
+    mtime: string;
+    ctime: string;
+  };
+}
+
 const Files = Vue.extend({
   data() {
     return {
@@ -32,9 +63,19 @@ const Files = Vue.extend({
     this.fetchFiles();
   },
   methods: {
+    durationChangeEventHandler($event: any, file: Video) {
+      $event.target.addEventListener('timeupdate', (e: any) => {
+        const currentTime = e.target.currentTime;
+        console.log(file.date, currentTime);
+      });
+    },
     fetchFiles() {
       this.$http.get('/files').then((res: any) => {
-        this.files = res.data;
+        this.files = res.data.sort((a: Video, b: Video) => {
+          const aDate = new Date(a.date);
+          const bDate = new Date(b.date);
+          return aDate > bDate ? -1 : aDate < bDate ? 1 : 0;
+        });
       });
     },
     printDate(dateStr: string) {
