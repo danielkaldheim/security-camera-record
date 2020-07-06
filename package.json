@@ -7,6 +7,7 @@
     "build": "vue-cli-service build",
     "build:server": "tsc -p tsconfig.server.json",
     "build:all": "yarn build && yarn build:server",
+    "build:docker": "yarn build:all && docker build -t registry.crudus.no/docker/security-camera-record .",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
