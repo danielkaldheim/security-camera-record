@@ -19,7 +19,7 @@
     <div class="video-block" v-if="isActiveDay('Today')">
       <h4>Now</h4>
       <div>
-        <img src="http://10.1.4.91:8080/?action=stream" class="video-preview" />
+        <img :src="cameraUrl" class="video-preview" />
       </div>
     </div>
     <v-template v-for="(file, index) in files" :key="file.filePath">
@@ -51,12 +51,20 @@
                   <strong>{{ entity.name }}</strong
                   >: <span v-html="getLogItem(entity)" />
                 </div>
-                <ul v-if="entity.domain == 'person' || entity.domain == 'binary_sensor'">
+                <ul
+                  v-if="
+                    entity.domain == 'person' ||
+                      entity.domain == 'binary_sensor'
+                  "
+                >
                   <li
                     v-for="(log, index) in getLogChanges(entity)"
                     :key="'changes-' + index"
                   >
-                    <small><strong>{{ log.time }}</strong>: {{ log.value }}</small>
+                    <small
+                      ><strong>{{ log.time }}</strong
+                      >: {{ log.value }}</small
+                    >
                   </li>
                 </ul>
               </v-template>
@@ -116,6 +124,7 @@ interface LogItem {
 }
 
 interface DataInterface {
+  cameraUrl?: string;
   files: Video[];
   days: string[];
   activeDay: string;
@@ -127,6 +136,7 @@ interface DataInterface {
 const Files = Vue.extend({
   data() {
     const d: DataInterface = {
+      cameraUrl: '/camera.jpg',
       activeDay: 'Today',
       files: [],
       days: [],
@@ -214,11 +224,13 @@ const Files = Vue.extend({
       return filesize(size);
     },
     getLogChanges(entity: Entity) {
-      let logElements: LogItem[] = this.logs.filter((log: LogItem) => {
-        if (log.entity == entity.id) {
-          return true;
-        }
-      }).sort((a: LogItem, b: LogItem) => {
+      let logElements: LogItem[] = this.logs
+        .filter((log: LogItem) => {
+          if (log.entity == entity.id) {
+            return true;
+          }
+        })
+        .sort((a: LogItem, b: LogItem) => {
           const aDate = new Date(a.timestamp);
           const bDate = new Date(b.timestamp);
           return aDate < bDate ? -1 : aDate > bDate ? 1 : 0;

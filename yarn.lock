@@ -2291,9 +2291,9 @@ caniuse-api@^3.0.0:
     lodash.uniq "^4.5.0"
 
 caniuse-lite@^1.0.0, caniuse-lite@^1.0.30001087, caniuse-lite@^1.0.30001093:
-  version "1.0.30001094"
-  resolved "https://registry.npmjs.org/caniuse-lite/-/caniuse-lite-1.0.30001094.tgz#0b11d02e1cdc201348dbd8e3e57bd9b6ce82b175"
-  integrity sha512-ufHZNtMaDEuRBpTbqD93tIQnngmJ+oBknjvr0IbFympSdtFpAUFmNv4mVKbb53qltxFx0nK3iy32S9AqkLzUNA==
+  version "1.0.30001228"
+  resolved "https://registry.npmjs.org/caniuse-lite/-/caniuse-lite-1.0.30001228.tgz"
+  integrity sha512-QQmLOGJ3DEgokHbMSA8cj2a+geXqmnpyOFT0lhQV6P3/YOJvGDEwoedcwxEQ30gJIwIIunHIicunJ2rzK5gB2A==
 
 case-sensitive-paths-webpack-plugin@^2.3.0:
   version "2.3.0"
@@ -5925,6 +5925,11 @@ node-libs-browser@^2.2.1:
     url "^0.11.0"
     util "^0.11.0"
     vm-browserify "^1.0.1"
+
+node-mjpeg-proxy@^0.3.2:
+  version "0.3.2"
+  resolved "https://registry.yarnpkg.com/node-mjpeg-proxy/-/node-mjpeg-proxy-0.3.2.tgz#eba33032a637815dbf7405d800c7167e5f194116"
+  integrity sha512-xZAHAF1LK1DSSgvEQnWJQ3/la+oqaVkEVWqYtGNvte0/Dt8B8trcqjjdJulYliCM+TLdkjwxu+uG4CNmpzZ2Tg==
 
 node-releases@^1.1.58:
   version "1.1.58"

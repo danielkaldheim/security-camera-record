@@ -4,6 +4,7 @@ import path from 'path';
 import * as fs from 'fs';
 import ES from '@elastic/elasticsearch';
 import { exception } from 'console';
+const MjpegProxy = require('node-mjpeg-proxy');
 
 // initialize configuration
 dotenv.config();
@@ -19,6 +20,8 @@ const dataDir = process.env.DATA_DIR;
 const app = express();
 app.use(express.json());
 
+const proxy1 = new MjpegProxy(process.env.CAMERA_URL);
+
 app.use('/data', express.static(dataDir));
 app.use('/css', express.static(__dirname + '/css'));
 app.use('/img', express.static(__dirname + '/img'));
@@ -26,6 +29,12 @@ app.use('/js', express.static(__dirname + '/js'));
 
 app.get('/', (req, res) => {
   res.sendFile(__dirname + '/index.html');
+});
+
+app.get('/camera.jpg', proxy1.proxyRequest);
+
+app.get('/api/urls', (req, res) => {
+  res.json({ cameraUrl: '/camera.jpg' });
 });
 
 app.get('/files', (req, res) => {
